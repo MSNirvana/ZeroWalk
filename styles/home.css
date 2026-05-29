@@ -170,10 +170,14 @@ body {
   background: #111;
   color: #fff;
   border: none;
-  padding: 14px 48px;
-  font-size: 13px;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
+  padding: 14px 28px;
+  font-size: 14px;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  text-transform: none;
+  max-width: calc(100vw - 48px);
+  text-align: center;
+  line-height: 1.35;
   text-decoration: none;
   cursor: pointer;
   border-radius: 2px;
