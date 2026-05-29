@@ -1,4 +1,4 @@
-/** 首页 UI：汇聚后导航、联系按钮与弹窗 */
+/** 首页 UI：顶部导航、联系按钮与弹窗 */
 (function () {
   const nav = document.getElementById("topNavTags");
   const contactBtn = document.getElementById("contactBtn");
@@ -9,14 +9,6 @@
   const formSubmit = document.getElementById("formSubmit");
 
   let idle = { schedule: () => {}, clear: () => {}, getState: () => "wander" };
-
-  function showNav() {
-    nav?.classList.add("is-visible");
-  }
-
-  function hideNav() {
-    nav?.classList.remove("is-visible");
-  }
 
   function showContact() {
     contactBtn?.classList.add("is-visible");
@@ -101,8 +93,6 @@
   });
 
   window.ZeroWalkHomeUI = {
-    showNav,
-    hideNav,
     showContact,
     hideContact,
     openModal,

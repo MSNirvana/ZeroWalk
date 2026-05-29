@@ -17,7 +17,7 @@ const TRAIL_MAX = 4;
 const TRAIL_INTERVAL = 3;
 const PARTICLE_COUNT = 32;
 const ASSEMBLE_MS = 650;
-const IDLE_MS = 5000;
+const IDLE_MS = 15000;
 const DISPERSE_MS = 1200;
 const MAX_DPR = 2;
 const LOGO_SRC = window.ZeroWalk.home.logoSrc;
@@ -84,11 +84,11 @@ function easeOutCubic(t) {
 }
 
 function wanderBrandSize() {
-  return rand(92, 118);
+  return rand(184, 236);
 }
 
 function wanderSloganSize() {
-  return rand(52, 72);
+  return rand(104, 144);
 }
 
 function fontAt(size, group) {
@@ -184,9 +184,9 @@ function randomPosition(halfSize) {
 
 function makeWanderVelocity() {
   return {
-    vx: randSign() * rand(0.15, 0.35),
-    vy: randSign() * rand(0.15, 0.35),
-    vrot: rand(-0.008, 0.008),
+    vx: randSign() * rand(0.28, 0.55),
+    vy: randSign() * rand(0.28, 0.55),
+    vrot: rand(-0.012, 0.012),
   };
 }
 
@@ -194,7 +194,8 @@ function createObjects() {
   objects = [];
   colorIndex = 0;
 
-  const logoPos = randomPosition(28);
+  const logoSize = wanderBrandSize();
+  const logoPos = randomPosition(logoSize / 2);
   const logoVel = makeWanderVelocity();
   objects.push({
     type: "logo",
@@ -206,7 +207,7 @@ function createObjects() {
     targetY: 0,
     scatterX: 0,
     scatterY: 0,
-    scatterSize: 56,
+    scatterSize: logoSize,
     scatterRot: 0,
     ...logoVel,
     rotation: rand(0, Math.PI * 2),
@@ -214,7 +215,7 @@ function createObjects() {
     color: null,
     alpha: 0,
     fadeDelay: 0,
-    size: wanderBrandSize(),
+    size: logoSize,
     targetSize: 56,
     trail: [],
   });
@@ -498,7 +499,6 @@ function enterHold() {
     if (hc) obj.color = hc;
   });
   setTimeout(() => {
-    ui.showNav();
     ui.showContact();
   }, 300);
   scheduleIdleTimer();
@@ -518,7 +518,7 @@ function assignScatterTargets() {
     obj.scatterRot = rand(-0.35, 0.35);
     obj.physicsOn = false;
     if (obj.type === "logo") {
-      obj.scatterSize = rand(88, 108);
+      obj.scatterSize = rand(176, 216);
     } else if (obj.group === "slogan") {
       obj.scatterSize = wanderSloganSize();
     } else {
@@ -530,7 +530,6 @@ function assignScatterTargets() {
 function startDisperse() {
   if (state !== "hold") return;
   clearIdleTimer();
-  ui.hideNav();
   ui.hideContact();
   ui.closeModal();
   state = "disperse";
@@ -741,7 +740,6 @@ function startAssemble() {
   state = "assemble";
   assembleStart = performance.now();
   hint.classList.add("is-hidden");
-  ui.hideNav();
   ui.hideContact();
   clearIdleTimer();
   sloganCacheKey = "";
