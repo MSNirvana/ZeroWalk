@@ -1,0 +1,119 @@
+/* 全站渐变背景 + 顶部文字导航（首页与子页共用） */
+
+.bg-gradient {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  will-change: background-position;
+  background: linear-gradient(
+    125deg,
+    #f7f6f2 0%,
+    #ebe8ff 14%,
+    #ffd9e8 28%,
+    #d9f2ff 42%,
+    #fff4d6 56%,
+    #d8ffe8 70%,
+    #e8deff 84%,
+    #f7f6f2 100%
+  );
+  background-size: 360% 360%;
+  animation: gradient-flow 24s ease-in-out infinite;
+}
+
+.bg-gradient::after {
+  content: "";
+  position: absolute;
+  inset: -10%;
+  background:
+    radial-gradient(ellipse 75% 55% at 22% 38%, rgba(99, 102, 241, 0.28), transparent 68%),
+    radial-gradient(ellipse 65% 50% at 78% 62%, rgba(16, 185, 129, 0.22), transparent 68%),
+    radial-gradient(ellipse 55% 45% at 52% 18%, rgba(236, 72, 153, 0.2), transparent 68%),
+    radial-gradient(ellipse 50% 40% at 88% 22%, rgba(245, 158, 11, 0.18), transparent 65%);
+  animation: gradient-orbs 32s ease-in-out infinite alternate;
+  will-change: transform, opacity;
+}
+
+@keyframes gradient-flow {
+  0%,
+  100% {
+    background-position: 0% 42%;
+  }
+  33% {
+    background-position: 55% 68%;
+  }
+  66% {
+    background-position: 100% 28%;
+  }
+}
+
+@keyframes gradient-orbs {
+  0% {
+    transform: scale(1) translate(0, 0);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1.06) translate(1.5%, -1.5%);
+    opacity: 0.88;
+  }
+}
+
+.top-nav,
+.top-nav-tags {
+  position: fixed;
+  top: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 1.25rem 1.75rem;
+  max-width: min(720px, 92vw);
+  padding: 0 16px;
+  pointer-events: auto;
+}
+
+.top-nav__link,
+.top-nav-tags a {
+  font-size: 13px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(26, 26, 26, 0.72);
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+  background: none;
+  border: none;
+  box-shadow: none;
+  padding: 0;
+  transition: color 0.2s ease, opacity 0.2s ease;
+}
+
+.top-nav__link:hover,
+.top-nav-tags a:hover {
+  color: #111;
+  transform: none;
+  box-shadow: none;
+}
+
+.top-nav__link.is-active,
+.top-nav-tags a.is-active {
+  color: #111;
+  font-weight: 700;
+}
+
+@media (max-width: 520px) {
+  .top-nav,
+  .top-nav-tags {
+    top: 18px;
+    gap: 0.85rem 1.1rem;
+  }
+
+  .top-nav__link,
+  .top-nav-tags a {
+    font-size: 11px;
+    letter-spacing: 0.1em;
+  }
+}

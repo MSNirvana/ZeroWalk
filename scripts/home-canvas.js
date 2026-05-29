@@ -25,11 +25,6 @@ const BRAND_COLOR = "#111111";
 const SLOGAN_COLOR = "#b5b3ad";
 const SLOGAN_TRACKING = 0.06;
 
-function submitForm(data) {
-  console.log(data);
-}
-window.submitForm = submitForm;
-
 function rand(min, max) {
   return min + Math.random() * (max - min);
 }
@@ -106,13 +101,6 @@ function colorAt(index) {
 const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d", { alpha: true, desynchronized: true });
 const hint = document.getElementById("hint");
-const contactBtn = document.getElementById("contactBtn");
-const topNavTags = document.getElementById("topNavTags");
-const modalOverlay = document.getElementById("modalOverlay");
-const modalCard = document.getElementById("modalCard");
-const modalClose = document.getElementById("modalClose");
-const contactForm = document.getElementById("contactForm");
-const formSubmit = document.getElementById("formSubmit");
 
 let state = "wander";
 let width = 0;
@@ -154,18 +142,8 @@ function clearIdleTimer() {
 
 function scheduleIdleTimer() {
   clearIdleTimer();
-  if (state !== "hold" || modalCard.classList.contains("is-open")) return;
+  if (state !== "hold") return;
   idleTimer = setTimeout(startDisperse, IDLE_MS);
-}
-
-function showHoldChrome() {
-  topNavTags.classList.add("is-visible");
-  contactBtn.classList.add("is-visible");
-}
-
-function hideHoldChrome() {
-  topNavTags.classList.remove("is-visible");
-  contactBtn.classList.remove("is-visible");
 }
 
 function resizeCanvas() {
@@ -514,7 +492,6 @@ function enterHold() {
     const hc = holdColorFor(obj);
     if (hc) obj.color = hc;
   });
-  setTimeout(() => showHoldChrome(), 300);
   scheduleIdleTimer();
 }
 
@@ -546,7 +523,6 @@ function startDisperse() {
   clearIdleTimer();
   state = "disperse";
   disperseStart = performance.now();
-  hideHoldChrome();
   assignScatterTargets();
   objects.forEach((obj) => {
     obj.trail = [];
@@ -753,7 +729,6 @@ function startAssemble() {
   state = "assemble";
   assembleStart = performance.now();
   hint.classList.add("is-hidden");
-  hideHoldChrome();
   clearIdleTimer();
   sloganCacheKey = "";
   brandCacheKey = "";
@@ -778,43 +753,10 @@ function onUserClick() {
   }
 }
 
-function openModal() {
-  modalOverlay.classList.add("is-open");
-  modalCard.classList.add("is-open");
-  modalOverlay.setAttribute("aria-hidden", "false");
-  clearIdleTimer();
-}
-
-function closeModal() {
-  modalOverlay.classList.remove("is-open");
-  modalCard.classList.remove("is-open");
-  modalOverlay.setAttribute("aria-hidden", "true");
-  setTimeout(resetForm, 300);
-  scheduleIdleTimer();
-}
-
-function resetForm() {
-  contactForm.reset();
-  formSubmit.disabled = false;
-  formSubmit.textContent = "提交";
-}
-
 document.addEventListener(
   "click",
   (e) => {
-    if (
-      modalCard.classList.contains("is-open") &&
-      e.target === modalOverlay
-    ) {
-      closeModal();
-      return;
-    }
-    if (
-      e.target.closest(".modal-card") ||
-      e.target.closest(".contact-btn") ||
-      e.target.closest(".top-nav-tags a")
-    ) {
-      if (state === "hold") scheduleIdleTimer();
+    if (e.target.closest(".top-nav-tags a") || e.target.closest(".top-nav a")) {
       return;
     }
     onUserClick();
@@ -822,39 +764,11 @@ document.addEventListener(
   true
 );
 
-contactBtn.addEventListener("click", (e) => {
-  e.stopPropagation();
-  openModal();
-});
-
-modalClose.addEventListener("click", closeModal);
-
-document.addEventListener("keydown", (e) => {
-  if (e.key === "Escape" && modalCard.classList.contains("is-open")) {
-    closeModal();
-  }
-});
-
-contactForm.addEventListener("submit", (e) => {
-  e.preventDefault();
-  const name = document.getElementById("fieldName").value.trim();
-  const phone = document.getElementById("fieldPhone").value.trim();
-  const need = document.getElementById("fieldNeed").value.trim();
-  if (!name || !phone) return;
-
-  submitForm({ name, phone, need });
-
-  formSubmit.disabled = true;
-  formSubmit.textContent = "已收到，我们会尽快联系您 ✓";
-  setTimeout(closeModal, 2000);
-});
-
 window.addEventListener("resize", resizeCanvas);
 
 window.addEventListener("load", async () => {
   try {
     logoImg = await loadImage(LOGO_SRC);
-    await loadImage("assets/qrcode.png");
   } catch (err) {
     console.warn("图片预加载失败，尝试备用路径", err);
     try {

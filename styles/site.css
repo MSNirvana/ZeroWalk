@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&display=swap");
+@import url("./brand.css");
 
 :root {
   --bg: oklch(99% 0.004 155);
@@ -33,7 +34,7 @@ html {
 body {
   margin: 0;
   color: var(--text);
-  background: var(--bg);
+  background: #f0eeff;
   font-family: var(--sans);
   font-size: 16px;
   line-height: 1.7;
@@ -58,17 +59,14 @@ textarea {
 }
 
 .site-shell {
+  position: relative;
+  z-index: 1;
   min-height: 100vh;
   overflow-x: clip;
 }
 
-.topbar {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: oklch(100% 0 0 / 0.82);
-  backdrop-filter: blur(16px);
-  border-bottom: 1px solid var(--line);
+.site-main {
+  padding-top: 4.5rem;
 }
 
 .topbar-inner,
@@ -621,9 +619,19 @@ textarea {
 }
 
 .page-head {
-  padding: 3rem 0 2rem;
-  border-bottom: 1px solid var(--line);
-  background: var(--gradient-soft);
+  padding: 2rem 0 1.75rem;
+  border-bottom: none;
+  background: transparent;
+}
+
+.page-head--inline {
+  padding-top: 0;
+  padding-bottom: 1.25rem;
+}
+
+.page-wrap--tight {
+  padding-top: 0;
+  padding-bottom: 0.5rem;
 }
 
 .page-head .section-label {
@@ -646,8 +654,11 @@ textarea {
 .detail-block {
   padding: 1.5rem;
   border-radius: var(--radius-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(20px) saturate(1.35);
+  -webkit-backdrop-filter: blur(20px) saturate(1.35);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 12px 40px rgba(60, 50, 90, 0.06);
 }
 
 .detail-block h3,
@@ -753,11 +764,15 @@ textarea {
 .contact-card,
 .profile-card,
 .form-panel,
-.admin-panel {
+.admin-panel,
+.metric-card {
   padding: 1.5rem;
   border-radius: var(--radius-lg);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.42);
+  backdrop-filter: blur(20px) saturate(1.35);
+  -webkit-backdrop-filter: blur(20px) saturate(1.35);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  box-shadow: 0 12px 40px rgba(60, 50, 90, 0.06);
 }
 
 .form-shell {
@@ -965,8 +980,8 @@ th {
 }
 
 .footer {
-  border-top: 1px solid var(--line);
-  background: var(--surface);
+  border-top: 1px solid rgba(255, 255, 255, 0.35);
+  background: transparent;
 }
 
 .footer-inner {
