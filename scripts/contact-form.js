@@ -7,11 +7,11 @@
  * 3. 命名为「官网询盘助手」→ 添加完成
  * 4. 复制 Webhook 地址，格式为：
  *    https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxx
- * 5. 将 key= 后面的字符串填入 worker.js 的 WECOM_WEBHOOK
+ * 5. 在 Cloudflare Workers 环境变量添加 WECOM_WEBHOOK（完整 Webhook URL，勿提交到 Git）
  *
  * 【第二步：部署 Cloudflare Workers】
  * 1. 注册 Cloudflare 账号（免费）→ Workers & Pages → 创建应用
- * 2. 选择「创建 Worker」→ 将仓库根目录 worker.js 内容粘贴进去
+ * 2. 将 worker.example.js 复制为线上 Worker，配置环境变量 WECOM_WEBHOOK
  * 3. 保存并部署 → 复制 Workers 域名
  * 4. 将域名填入 scripts/site-config.js 的 wecomProxyUrl
  *

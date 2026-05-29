@@ -29,8 +29,17 @@ window.ZeroWalk = {
     "政策自动触达",
   ],
   storageKey: "zerowalk_intake_records",
-  /** Cloudflare Workers 域名，用于转发企业微信 Webhook（见 worker.js） */
+  /** Cloudflare Workers 域名（见 worker.example.js） */
   wecomProxyUrl: "https://zerowalk-contact.gg1178078309.workers.dev",
+  contactForm: {
+    issueOptions: [
+      "不知道从哪里开始用 AI",
+      "有具体场景，需要人帮我做出来",
+      "已有工具，但没效果或没人用",
+      "想了解合作或加盟方式",
+      "其他",
+    ],
+  },
   home: {
     logoSrc: "/assets/logo-nobg.png",
     logoFallback: "/assets/logo-black.png",

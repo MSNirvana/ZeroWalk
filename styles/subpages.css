@@ -734,6 +734,20 @@
     width: auto;
     margin: 0 48px;
   }
+
+  .sub-cases {
+    display: flex;
+    overflow-x: auto;
+    gap: 16px;
+    scroll-snap-type: x mandatory;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .sub-cases .sub-case-card {
+    flex: 0 0 min(320px, 85vw);
+    scroll-snap-align: start;
+  }
 }
 
 @media (max-width: 640px) {
@@ -772,21 +786,5 @@
   .sub-collab-primary {
     padding: 28px 24px;
     min-height: 280px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .sub-cases {
-    display: flex;
-    overflow-x: auto;
-    gap: 16px;
-    scroll-snap-type: x mandatory;
-    padding-bottom: 8px;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  .sub-cases .sub-case-card {
-    flex: 0 0 min(320px, 85vw);
-    scroll-snap-align: start;
   }
 }

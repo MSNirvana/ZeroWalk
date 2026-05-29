@@ -29,6 +29,8 @@ ZeroWalk/
     ├── storage.js          # 线索本地存储
     ├── contact-form.js     # 询盘推送（企业微信）
     ├── contact-modal.js    # 全站联系弹窗
+    ├── zerowalk-boot.js    # 子页脚本引导（含弹窗）
+    ├── zerowalk-boot-min.js # 子页精简引导
     ├── home-ui.js          # 首页导航与汇聚 UI
     ├── home-canvas.js      # 首页 Canvas 动画
     ├── admin.js            # 管理演示页
@@ -46,12 +48,12 @@ ZeroWalk/
 | 首页 | `home-ui.js`、`home-canvas.js` | 汇聚交互与 Canvas |
 | 数据 | `storage.js`、`admin.js` | 表单与演示后台 |
 
-## 脚本加载顺序
+## 脚本加载
 
-- **子页面（含联系弹窗）**：`site-config.js` → `storage.js` → `contact-form.js` → `contact-modal.js` → `shared.js`（`/services` 另加 `subpage-ui.js`）
-- **关于我们**：`site-config.js` → `shared.js`
-- **首页**：`site-config.js` → `storage.js` → `contact-form.js` → `contact-modal.js` → `shared.js` → `home-ui.js` → `home-canvas.js`
-- **管理页**：`site-config.js` → `storage.js` → `shared.js` → `admin.js`
+- **子页（含联系弹窗）**：`<script src="/scripts/zerowalk-boot.js">`；`/services` 加 `data-modules="subpage-ui"`
+- **关于我们**：`<script src="/scripts/zerowalk-boot-min.js">`
+- **首页**：`site-config` → `storage` → `contact-form` → `contact-modal` → `shared` → `home-ui` → `home-canvas`
+- **管理页**：`site-config` → `storage` → `shared` → `admin`
 
 ## 本地运行
 
@@ -71,9 +73,10 @@ python3 -m http.server 8080
 
 ## 询盘推送（企业微信）
 
-1. 配置 `worker.js` 中的 `WECOM_WEBHOOK`，部署到 Cloudflare Workers  
-2. 在 `scripts/site-config.js` 填写 `wecomProxyUrl`  
-3. 未配置时表单仍会写入 `localStorage`，仅跳过远程推送  
+1. 按 `worker.example.js` 部署 Cloudflare Worker  
+2. 在 Worker **环境变量** 设置 `WECOM_WEBHOOK`（完整 Webhook URL，勿写入 Git）  
+3. 在 `scripts/site-config.js` 填写 `wecomProxyUrl`  
+4. 未配置时表单仍会写入 `localStorage`，仅跳过远程推送  
 
 ## 部署
 

@@ -18,11 +18,6 @@
     return window.ZeroWalkContactModal?.isOpen?.() ?? false;
   }
 
-  function openModal() {
-    idle.clear();
-    window.ZeroWalkContactModal?.open();
-  }
-
   function closeModal() {
     window.ZeroWalkContactModal?.close();
     if (idle.getState() === "hold") idle.schedule();
@@ -50,7 +45,6 @@
   window.ZeroWalkHomeUI = {
     showContact,
     hideContact,
-    openModal,
     closeModal,
     isModalOpen,
     bindIdle,

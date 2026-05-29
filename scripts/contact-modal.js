@@ -2,10 +2,35 @@
 (function () {
   const config = window.ZeroWalk || {};
   const qrSrc = config.home?.qrSrc || "/assets/qrcode.png";
+  const defaultIssueOptions = [
+    "不知道从哪里开始用 AI",
+    "有具体场景，需要人帮我做出来",
+    "已有工具，但没效果或没人用",
+    "想了解合作或加盟方式",
+    "其他",
+  ];
 
   let els = {};
   let successCloseTimer = null;
   let bound = false;
+
+  function escapeHtml(value) {
+    return String(value)
+      .replace(/&/g, "&amp;")
+      .replace(/"/g, "&quot;")
+      .replace(/</g, "&lt;");
+  }
+
+  function issueSelectHtml() {
+    const options = config.contactForm?.issueOptions || defaultIssueOptions;
+    const items = options
+      .map((label) => `<option value="${escapeHtml(label)}">${escapeHtml(label)}</option>`)
+      .join("");
+    return `<select id="fieldIssue" name="issue" required>
+              <option value="" disabled selected>请选择最符合的描述</option>
+              ${items}
+            </select>`;
+  }
 
   function modalTemplate() {
     return `
@@ -38,14 +63,7 @@
             <label for="fieldCompany">公司 / 业务</label>
             <input id="fieldCompany" type="text" name="company" placeholder="例：跨境电商团队 / 护肤品代理品牌" required />
             <label for="fieldIssue">最想解决的问题</label>
-            <select id="fieldIssue" name="issue" required>
-              <option value="" disabled selected>请选择最符合的描述</option>
-              <option value="不知道从哪里开始用 AI">不知道从哪里开始用 AI</option>
-              <option value="有具体场景，需要人帮我做出来">有具体场景，需要人帮我做出来</option>
-              <option value="已有工具，但没效果或没人用">已有工具，但没效果或没人用</option>
-              <option value="想了解合作或加盟方式">想了解合作或加盟方式</option>
-              <option value="其他">其他</option>
-            </select>
+            ${issueSelectHtml()}
             <label for="fieldNote">补充说明 <span class="modal-form__optional">（选填）</span></label>
             <textarea id="fieldNote" name="note" placeholder="可描述您的业务规模、具体问题等，方便我们提前了解" rows="2"></textarea>
             <button type="submit" class="modal-form__submit" id="formSubmit">提交</button>
@@ -162,11 +180,15 @@
     els.form?.addEventListener("submit", async (e) => {
       e.preventDefault();
 
-      const name = document.getElementById("fieldName")?.value.trim();
-      const contact = document.getElementById("fieldContact")?.value.trim();
-      const company = document.getElementById("fieldCompany")?.value.trim();
-      const issue = document.getElementById("fieldIssue")?.value.trim();
-      const note = document.getElementById("fieldNote")?.value.trim();
+      const fd = new FormData(els.form);
+      const data = {
+        name: String(fd.get("name") || "").trim(),
+        contact: String(fd.get("contact") || "").trim(),
+        company: String(fd.get("company") || "").trim(),
+        issue: String(fd.get("issue") || "").trim(),
+        note: String(fd.get("note") || "").trim(),
+      };
+      const { name, contact, company, issue, note } = data;
 
       if (!name || !contact || !company || !issue) {
         els.form.reportValidity?.();
@@ -178,7 +200,6 @@
         els.submit.textContent = "提交中...";
       }
 
-      const data = { name, contact, company, issue, note };
       const record = window.ZeroWalkStorage?.appendLead(data);
       console.log("联系表单已提交", record);
 

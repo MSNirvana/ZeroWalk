@@ -1,6 +1,8 @@
 /**
- * Cloudflare Workers：官网询盘 → 企业微信群机器人
- * 在 Workers 环境变量中配置 WECOM_WEBHOOK（勿写入公开仓库）
+ * Cloudflare Workers 示例（复制为 worker.js 部署，勿提交真实 Webhook）
+ *
+ * 部署后在 Workers → Settings → Variables 添加：
+ *   WECOM_WEBHOOK = https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=你的key
  */
 
 const corsHeaders = {
