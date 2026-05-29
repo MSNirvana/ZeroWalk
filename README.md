@@ -19,6 +19,7 @@ ZeroWalk/
 │   ├── layout.css          # 字体、渐变背景、顶栏导航
 │   ├── home.css            # 首页（import layout）
 │   ├── contact-modal.css   # 全站联系弹窗
+│   ├── mobile.css          # 全站移动端适配
 │   ├── subpages.css        # 子页 IBM 式排版与组件
 │   └── site.css            # 子页通用样式（import layout + subpages）
 └── scripts/

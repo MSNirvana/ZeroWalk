@@ -1,0 +1,346 @@
+/* 全站移动端适配 */
+
+/* —— 安全区域（刘海 /  Home 指示条） —— */
+@supports (padding: max(0px)) {
+  .top-nav-bar {
+    padding-top: env(safe-area-inset-top);
+  }
+
+  .top-nav--home {
+    top: max(18px, calc(12px + env(safe-area-inset-top)));
+  }
+
+  .modal-card {
+    padding-bottom: max(24px, calc(16px + env(safe-area-inset-bottom)));
+  }
+
+  .home-contact-footer {
+    padding-bottom: max(8vh, calc(24px + env(safe-area-inset-bottom)));
+  }
+
+  .hint {
+    bottom: max(20px, calc(16px + env(safe-area-inset-bottom)));
+  }
+}
+
+/* —— 子页面通用 —— */
+.site-shell--sub {
+  overflow-x: clip;
+}
+
+@media (max-width: 768px) {
+  .site-shell--sub {
+    padding-top: 7rem;
+  }
+
+  .site-shell--sub .footer-inner {
+    width: min(1200px, calc(100vw - 40px));
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .sub-divider {
+    margin: 40px 0;
+  }
+
+  .sub-lead--spaced,
+  .sub-lead--spaced-sm {
+    margin-bottom: 28px;
+  }
+
+  .sub-tag-marquee {
+    margin-left: -20px;
+    margin-right: -20px;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-shell--sub {
+    padding-top: 7.75rem;
+  }
+
+  .sub-container {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .sub-section {
+    padding-top: 56px;
+    padding-bottom: 56px;
+  }
+
+  .sub-title {
+    font-size: clamp(26px, 7.2vw, 40px);
+    line-height: 1.2;
+  }
+
+  .sub-lead {
+    font-size: 1rem;
+    line-height: 1.65;
+    max-width: none;
+  }
+
+  .sub-stat-line {
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    line-height: 1.55;
+  }
+
+  .sub-hero-dark {
+    padding: 48px 0 56px;
+  }
+
+  .sub-hero-dark .sub-title {
+    font-size: clamp(26px, 7.5vw, 36px);
+  }
+
+  .sub-hero-dark .sub-lead {
+    font-size: 0.98rem;
+  }
+
+  .sub-hero-stat__value {
+    font-size: clamp(36px, 10vw, 52px);
+  }
+
+  .sub-hero-stat__label {
+    font-size: 12px;
+  }
+
+  .sub-split-story__col {
+    padding: 28px 20px;
+  }
+
+  .sub-split-story__rule {
+    margin-left: 20px;
+    margin-right: 20px;
+  }
+
+  .sub-split-story h3 {
+    font-size: 1.2rem;
+  }
+
+  .sub-pull-quote {
+    padding: 28px 20px;
+    border-left-width: 3px;
+  }
+
+  .sub-pull-quote p {
+    font-size: clamp(17px, 4.5vw, 22px);
+    max-width: none;
+  }
+
+  .sub-step-col {
+    padding: 24px 20px;
+  }
+
+  .sub-step-num {
+    font-size: clamp(32px, 8vw, 44px);
+  }
+
+  .sub-step-col h3 {
+    font-size: 18px;
+  }
+
+  .sub-case-card {
+    padding: 24px 20px;
+  }
+
+  .sub-cta-bar {
+    min-height: auto;
+  }
+
+  .sub-cta-bar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 20px;
+    padding: 28px 0;
+  }
+
+  .sub-cta-bar__text,
+  .sub-cta-bar--tall .sub-cta-bar__text {
+    font-size: clamp(18px, 5vw, 24px);
+    line-height: 1.4;
+  }
+
+  .sub-btn-light,
+  .sub-btn-outline {
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+
+  .sub-collab-grid {
+    gap: 12px;
+  }
+
+  .sub-collab-primary {
+    padding: 28px 20px 24px;
+    min-height: 0;
+    gap: 20px;
+  }
+
+  .sub-collab-primary h3 {
+    padding-top: 32px;
+    max-width: none;
+    font-size: clamp(22px, 6vw, 28px);
+  }
+
+  .sub-collab-rec-badge {
+    top: 16px;
+    right: 16px;
+  }
+
+  .sub-collab-primary .sub-btn-light {
+    width: 100%;
+  }
+
+  .sub-collab-secondary {
+    padding: 22px 20px;
+  }
+
+  .footer-manifesto {
+    padding: 28px 20px;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+  }
+}
+
+@media (max-width: 480px) {
+  .sub-container {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .sub-tag-marquee {
+    margin-left: -16px;
+    margin-right: -16px;
+  }
+
+  .sub-tag-marquee__group span {
+    padding: 7px 14px;
+    font-size: 12px;
+  }
+}
+
+/* —— 首页 —— */
+@media (max-width: 768px) {
+  .home-contact-middle {
+    padding-top: min(var(--hold-clearance, 34vh), 40vh);
+  }
+
+  .home-prose {
+    max-width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .home-prose__kicker {
+    font-size: 13px;
+    margin-bottom: 12px;
+  }
+
+  .home-prose__lead,
+  .home-prose__body,
+  .home-prose__muted {
+    font-size: 14px;
+    line-height: 1.68;
+  }
+
+  .home-contact-tagline {
+    font-size: 11px;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .contact-btn {
+    width: min(100%, 280px);
+    max-width: calc(100vw - 48px);
+    padding: 13px 28px;
+    font-size: 12px;
+    letter-spacing: 0.12em;
+  }
+
+  .home-contact-footer {
+    gap: 12px;
+  }
+}
+
+@media (max-width: 480px) {
+  .top-nav--home {
+    gap: 6px 12px;
+    max-width: 96vw;
+  }
+
+  .top-nav--home a {
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .home-contact-middle {
+    padding-top: min(var(--hold-clearance, 34vh), 36vh);
+    padding-bottom: 8px;
+  }
+
+  .hint {
+    font-size: 10px;
+    letter-spacing: 0.16em;
+  }
+}
+
+/* —— 联系弹窗 —— */
+@media (max-width: 640px) {
+  .modal-card {
+    width: calc(100vw - 24px);
+    max-width: none;
+    padding: 36px 20px 24px;
+    max-height: min(88vh, 100dvh - 24px);
+    border-radius: 10px;
+  }
+
+  .modal-close {
+    top: 12px;
+    right: 12px;
+  }
+
+  .modal-form label {
+    margin-top: 14px;
+  }
+
+  .modal-form__submit {
+    margin-top: 18px;
+  }
+}
+
+/* —— 管理演示页 —— */
+@media (max-width: 960px) {
+  .admin-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.75rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .page-head {
+    padding: 1.5rem 0 2rem;
+  }
+
+  .page-head h1 {
+    font-size: clamp(1.35rem, 5vw, 1.75rem);
+  }
+
+  .form-shell,
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .field-grid,
+  .choice-grid {
+    grid-template-columns: 1fr;
+  }
+}

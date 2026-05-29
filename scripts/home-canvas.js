@@ -11,8 +11,8 @@ const LETTER_COLORS = [
 const BRAND_LETTERS = ["Z", "e", "r", "o", "W", "a", "l", "k"];
 const SLOGAN_TEXT = "Walk in. Make AI work.";
 const SLOGAN_CHARS = [...SLOGAN_TEXT].filter((ch) => ch !== " ");
-const EDGE = 80;
-const NAV_SAFE_TOP = 80;
+const EDGE_DESKTOP = 80;
+const NAV_SAFE_TOP_DESKTOP = 80;
 const TRAIL_MAX = 4;
 const TRAIL_INTERVAL = 3;
 const PARTICLE_COUNT = 32;
@@ -60,11 +60,22 @@ function lerpColor(fromHex, toHex, t) {
   return `rgb(${r},${g},${bl})`;
 }
 
+function getEdgeInset() {
+  const w = window.innerWidth;
+  if (w < 400) return 28;
+  if (w < 640) return 44;
+  return EDGE_DESKTOP;
+}
+
+function getNavSafeTop() {
+  return window.innerWidth < 640 ? 108 : NAV_SAFE_TOP_DESKTOP;
+}
+
 function getAssembledFontSize() {
-  if (window.innerWidth < 768) {
-    return window.innerWidth * 0.12;
-  }
-  return Math.min(window.innerWidth * 0.105, 128);
+  const w = window.innerWidth;
+  if (w < 400) return w * 0.095;
+  if (w < 768) return w * 0.105;
+  return Math.min(w * 0.105, 128);
 }
 
 function getSloganFontSize(brandSize) {
@@ -171,10 +182,12 @@ function resizeCanvas() {
 }
 
 function randomPosition(halfSize) {
-  const minX = EDGE + halfSize;
-  const minY = NAV_SAFE_TOP + halfSize;
-  const maxX = width - EDGE - halfSize;
-  const maxY = height - EDGE - halfSize;
+  const edge = getEdgeInset();
+  const navTop = getNavSafeTop();
+  const minX = edge + halfSize;
+  const minY = navTop + halfSize;
+  const maxX = width - edge - halfSize;
+  const maxY = height - edge - halfSize;
   return {
     x: rand(minX, Math.max(minX, maxX)),
     y: rand(minY, Math.max(minY, maxY)),
@@ -283,8 +296,8 @@ function createParticles() {
   for (let i = 0; i < PARTICLE_COUNT; i++) {
     const color = LETTER_COLORS[Math.floor(Math.random() * LETTER_COLORS.length)];
     particles.push({
-      x: rand(EDGE, width - EDGE),
-      y: rand(NAV_SAFE_TOP, height - EDGE),
+      x: rand(getEdgeInset(), width - getEdgeInset()),
+      y: rand(getNavSafeTop(), height - getEdgeInset()),
       vx: randSign() * rand(0.05, 0.15),
       vy: randSign() * rand(0.05, 0.15),
       radius: rand(1, 2),
@@ -414,23 +427,25 @@ function handleBoundary(obj) {
     obj.type === "logo"
       ? getLogoWidthFromHeight(obj.size) / 2
       : obj.size * (obj.group === "slogan" ? 0.3 : 0.38);
-  if (obj.x < EDGE + half) {
-    obj.x = EDGE + half;
+  const edge = getEdgeInset();
+  const navTop = getNavSafeTop();
+  if (obj.x < edge + half) {
+    obj.x = edge + half;
     obj.vx = Math.abs(obj.vx) + rand(0, 0.05);
     obj.vy += rand(-0.04, 0.04);
   }
-  if (obj.x > width - EDGE - half) {
-    obj.x = width - EDGE - half;
+  if (obj.x > width - edge - half) {
+    obj.x = width - edge - half;
     obj.vx = -Math.abs(obj.vx) - rand(0, 0.05);
     obj.vy += rand(-0.04, 0.04);
   }
-  if (obj.y < NAV_SAFE_TOP + half) {
-    obj.y = NAV_SAFE_TOP + half;
+  if (obj.y < navTop + half) {
+    obj.y = navTop + half;
     obj.vy = Math.abs(obj.vy) + rand(0, 0.05);
     obj.vx += rand(-0.04, 0.04);
   }
-  if (obj.y > height - EDGE - half) {
-    obj.y = height - EDGE - half;
+  if (obj.y > height - edge - half) {
+    obj.y = height - edge - half;
     obj.vy = -Math.abs(obj.vy) - rand(0, 0.05);
     obj.vx += rand(-0.04, 0.04);
   }
@@ -620,20 +635,22 @@ function updateParticles() {
   particles.forEach((p) => {
     p.x += p.vx * speed;
     p.y += p.vy * speed;
-    if (p.x < EDGE) {
-      p.x = EDGE;
+    const edge = getEdgeInset();
+    const navTop = getNavSafeTop();
+    if (p.x < edge) {
+      p.x = edge;
       p.vx = Math.abs(p.vx);
     }
-    if (p.x > width - EDGE) {
-      p.x = width - EDGE;
+    if (p.x > width - edge) {
+      p.x = width - edge;
       p.vx = -Math.abs(p.vx);
     }
-    if (p.y < NAV_SAFE_TOP) {
-      p.y = NAV_SAFE_TOP;
+    if (p.y < navTop) {
+      p.y = navTop;
       p.vy = Math.abs(p.vy);
     }
-    if (p.y > height - EDGE) {
-      p.y = height - EDGE;
+    if (p.y > height - edge) {
+      p.y = height - edge;
       p.vy = -Math.abs(p.vy);
     }
   });
