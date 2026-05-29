@@ -1,7 +1,6 @@
 /** 首页 UI：顶部导航、汇聚后联系区（弹窗由 contact-modal.js 负责） */
 (function () {
   const contactPanel = document.getElementById("contactPanel");
-  const contactBtn = document.getElementById("contactBtn");
 
   let idle = { schedule: () => {}, clear: () => {}, getState: () => "wander" };
 
@@ -47,11 +46,6 @@
     }
     return false;
   }
-
-  contactBtn?.addEventListener("click", (e) => {
-    e.stopPropagation();
-    openModal();
-  });
 
   window.ZeroWalkHomeUI = {
     showContact,

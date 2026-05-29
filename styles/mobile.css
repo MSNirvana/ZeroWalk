@@ -29,6 +29,10 @@
 }
 
 @media (max-width: 768px) {
+  #services-process {
+    scroll-margin-top: 7.5rem;
+  }
+
   .site-shell--sub {
     padding-top: 7rem;
   }
