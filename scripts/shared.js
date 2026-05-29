@@ -1,5 +1,7 @@
+/** 全站导航与页脚（依赖 site-config.js） */
 (function () {
-  const { brand, navLinks } = window.ZeroWalk;
+  const config = window.ZeroWalk || {};
+  const { brand, navLinks } = config;
 
   function getCurrentPage() {
     const path = window.location.pathname.split("/").pop();
@@ -12,6 +14,7 @@
   }
 
   function navLinksHtml(activePage) {
+    if (!navLinks?.length) return "";
     return navLinks
       .map(({ label, href }) => {
         const active = activePage === href ? " is-active" : "";
@@ -28,12 +31,17 @@
   }
 
   function renderSubNav(mount) {
+    if (!brand) return;
+
     const page = getCurrentPage();
     mount.className = "top-nav-bar";
     mount.innerHTML = `
       <div class="top-nav-bar__inner">
         <a href="${brand.href}" class="top-nav__brand">
-          <img src="${brand.logo}" alt="ZeroWalk" class="top-nav__logo" width="36" height="36" />
+          <picture class="top-nav__logo-wrap">
+            <source srcset="${brand.logo}" type="image/gif" media="(prefers-reduced-motion: no-preference)" />
+            <img src="${brand.logoStatic || brand.logo}" alt="" class="top-nav__logo" width="47" height="36" decoding="async" />
+          </picture>
           <span class="top-nav__brand-text">${brand.label}</span>
         </a>
         <nav class="top-nav__links" aria-label="页面导航">${navLinksHtml(page)}</nav>
@@ -48,10 +56,11 @@
     else renderSubNav(mount);
   }
 
-  function renderFooter() {
+  function renderFooterHtml() {
     const year = new Date().getFullYear();
     return `
       <footer class="footer">
+        <p class="footer-manifesto">工作流  ·  自动化  ·  Agent  ·  被 AI 放大的业务能力</p>
         <div class="footer-inner">
           <div>© ${year} 第零漫步 ZeroWalk. 从第零步开始，走进去做。</div>
         </div>
@@ -62,7 +71,7 @@
   function init() {
     renderSiteNav();
     const footerMount = document.querySelector("[data-shared-footer]");
-    if (footerMount) footerMount.innerHTML = renderFooter();
+    if (footerMount) footerMount.innerHTML = renderFooterHtml();
   }
 
   document.addEventListener("DOMContentLoaded", init);

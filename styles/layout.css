@@ -143,10 +143,17 @@
   color: #111;
 }
 
+.top-nav__logo-wrap {
+  display: block;
+  flex-shrink: 0;
+  line-height: 0;
+}
+
 .top-nav__logo {
   display: block;
-  width: 36px;
+  width: auto;
   height: 36px;
+  max-width: 56px;
   object-fit: contain;
   flex-shrink: 0;
 }
@@ -219,8 +226,9 @@
   }
 
   .top-nav__logo {
-    width: 30px;
+    width: auto;
     height: 30px;
+    max-width: 46px;
   }
 
   .top-nav__brand-text {
@@ -260,7 +268,7 @@
 }
 
 .site-shell--sub .footer-inner {
-  width: min(var(--max), calc(100vw - 2rem));
+  width: min(1200px, calc(100vw - 96px));
 }
 
 .site-shell--sub .detail-block a {

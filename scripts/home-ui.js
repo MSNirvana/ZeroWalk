@@ -1,6 +1,7 @@
 /** 首页 UI：顶部导航、联系按钮与弹窗 */
 (function () {
   const nav = document.getElementById("topNavTags");
+  const contactPanel = document.getElementById("contactPanel");
   const contactBtn = document.getElementById("contactBtn");
   const modalOverlay = document.getElementById("modalOverlay");
   const modalCard = document.getElementById("modalCard");
@@ -11,11 +12,13 @@
   let idle = { schedule: () => {}, clear: () => {}, getState: () => "wander" };
 
   function showContact() {
-    contactBtn?.classList.add("is-visible");
+    contactPanel?.classList.add("is-visible");
+    contactPanel?.setAttribute("aria-hidden", "false");
   }
 
   function hideContact() {
-    contactBtn?.classList.remove("is-visible");
+    contactPanel?.classList.remove("is-visible");
+    contactPanel?.setAttribute("aria-hidden", "true");
   }
 
   function isModalOpen() {
@@ -54,7 +57,11 @@
       closeModal();
       return true;
     }
-    if (e.target.closest(".modal-card") || e.target.closest(".contact-btn")) {
+    if (
+      e.target.closest(".modal-card") ||
+      e.target.closest(".contact-btn") ||
+      e.target.closest(".home-contact-panel")
+    ) {
       if (idle.getState() === "hold") idle.schedule();
       return true;
     }

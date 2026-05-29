@@ -17,7 +17,8 @@ const TRAIL_MAX = 4;
 const TRAIL_INTERVAL = 3;
 const PARTICLE_COUNT = 32;
 const ASSEMBLE_MS = 650;
-const IDLE_MS = 15000;
+const HOLD_LAYOUT_Y = 0.28;
+const ASSEMBLED_LAYOUT_Y = 0.4;
 const DISPERSE_MS = 1200;
 const MAX_DPR = 2;
 const LOGO_SRC = window.ZeroWalk.home.logoSrc;
@@ -146,8 +147,6 @@ function clearIdleTimer() {
 
 function scheduleIdleTimer() {
   clearIdleTimer();
-  if (state !== "hold" || ui.isModalOpen()) return;
-  idleTimer = setTimeout(startDisperse, IDLE_MS);
 }
 
 function resizeCanvas() {
@@ -344,13 +343,20 @@ function getBrandWidthsCached() {
   return brandWidthCache;
 }
 
+function usesHoldLayout() {
+  return state === "assemble" || state === "colorFade" || state === "hold";
+}
+
 function computeTargets() {
   assembledFontSize = getAssembledFontSize();
   sloganFontSize = getSloganFontSize(assembledFontSize);
   logoTargetSize = assembledFontSize;
   const logoW = getLogoWidthFromHeight(logoTargetSize);
-  const brandCenterY = height * 0.4;
-  const sloganCenterY = brandCenterY + assembledFontSize * 0.72 + 10;
+  const brandCenterY = height * (usesHoldLayout() ? HOLD_LAYOUT_Y : ASSEMBLED_LAYOUT_Y);
+  const sloganOffset = usesHoldLayout()
+    ? assembledFontSize * 0.58 + 8
+    : assembledFontSize * 0.72 + 10;
+  const sloganCenterY = brandCenterY + sloganOffset;
   const gap = 12;
 
   const brandWidths = getBrandWidthsCached();
@@ -388,6 +394,19 @@ function computeTargets() {
     obj.targetSize = sloganFontSize;
     cursorX += seg.width + (seg.track || 0);
   });
+
+  if (usesHoldLayout()) {
+    syncHoldClearance(brandCenterY, sloganCenterY);
+  }
+}
+
+function syncHoldClearance(brandCenterY, sloganCenterY) {
+  const sloganBottom = sloganCenterY + sloganFontSize * 0.9 + 16;
+  const clearanceVh = Math.min(48, (sloganBottom / height) * 100 + 2);
+  document.documentElement.style.setProperty(
+    "--hold-clearance",
+    `${clearanceVh}vh`,
+  );
 }
 
 function handleBoundary(obj) {
@@ -499,9 +518,9 @@ function enterHold() {
     if (hc) obj.color = hc;
   });
   setTimeout(() => {
+    computeTargets();
     ui.showContact();
   }, 300);
-  scheduleIdleTimer();
 }
 
 function assignScatterTargets() {
@@ -758,10 +777,6 @@ function startAssemble() {
 function onUserClick() {
   if (state === "wander") {
     startAssemble();
-    return;
-  }
-  if (state === "hold") {
-    scheduleIdleTimer();
   }
 }
 
