@@ -90,5 +90,11 @@
     if (footerMount) footerMount.innerHTML = renderFooterHtml();
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  (window.ZeroWalkRunWhenReady || ((fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }))(init);
 })();

@@ -1,6 +1,6 @@
 /** 本地线索存储（首页联系表单 + 管理演示页） */
 (function () {
-  const { storageKey } = window.ZeroWalk;
+  const storageKey = window.ZeroWalk?.storageKey ?? "zerowalk_intake_records";
 
   function readRecords() {
     try {

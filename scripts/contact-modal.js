@@ -235,7 +235,13 @@
     }
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  (window.ZeroWalkRunWhenReady || ((fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }))(init);
 
   window.ZeroWalkContactModal = { open, close, isOpen, handleDocumentClick };
 })();

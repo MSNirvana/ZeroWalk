@@ -10,6 +10,7 @@
     .filter(Boolean);
 
   const chain = [
+    "/scripts/dom-ready.js",
     "/scripts/site-config.js",
     "/scripts/storage.js",
     "/scripts/contact-form.js",

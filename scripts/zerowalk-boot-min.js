@@ -3,7 +3,7 @@
  * 用法：<script src="/scripts/zerowalk-boot-min.js"></script>
  */
 (function () {
-  const chain = ["/scripts/site-config.js", "/scripts/shared.js"];
+  const chain = ["/scripts/dom-ready.js", "/scripts/site-config.js", "/scripts/shared.js"];
 
   function loadNext(index) {
     if (index >= chain.length) return;

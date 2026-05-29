@@ -22,5 +22,11 @@
     document.querySelectorAll("[data-scenario-marquee]").forEach(renderScenarioMarquee);
   }
 
-  document.addEventListener("DOMContentLoaded", init);
+  (window.ZeroWalkRunWhenReady || ((fn) => {
+    if (document.readyState === "loading") {
+      document.addEventListener("DOMContentLoaded", fn);
+    } else {
+      fn();
+    }
+  }))(init);
 })();
