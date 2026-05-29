@@ -1,0 +1,5 @@
+# 旧 .html 链接 → 简洁路径（Cloudflare Pages / Netlify）
+/about.html       /about        301
+/services.html    /services     301
+/collaborate.html /collaborate  301
+/index.html       /             301

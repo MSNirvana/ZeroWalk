@@ -29,7 +29,7 @@ function renderRecordList(records) {
         <li>
           <button class="record-button ${index === 0 ? "active" : ""}" data-record-id="${record.id}">
             <strong>${record.name || "未命名"}</strong>
-            <div>${record.companyName || "未填写公司"} · ${roleLabel(record.roleType)}</div>
+            <div>${record.company || record.companyName || "未填写公司"} · ${roleLabel(record.roleType)}</div>
             <div>${record.city || "未填写城市"} · ${formatDate(record.createdAt)}</div>
           </button>
         </li>

@@ -2,14 +2,14 @@
 window.ZeroWalk = {
   brand: {
     label: "第零漫步",
-    href: "index.html",
-    logo: "assets/logo-anim.gif",
-    logoStatic: "assets/logo-nav.png",
+    href: "/",
+    logo: "/assets/logo-anim.gif",
+    logoStatic: "/assets/logo-nav.png",
   },
   navLinks: [
-    { label: "关于我们", href: "about.html" },
-    { label: "服务内容", href: "services.html" },
-    { label: "合作方式", href: "collaborate.html" },
+    { label: "关于我们", href: "/about" },
+    { label: "服务内容", href: "/services" },
+    { label: "合作方式", href: "/collaborate" },
   ],
   scenarioTags: [
     "商品文案批量生成",
@@ -29,9 +29,11 @@ window.ZeroWalk = {
     "政策自动触达",
   ],
   storageKey: "zerowalk_intake_records",
+  /** Cloudflare Workers 域名，用于转发企业微信 Webhook（见 worker.js） */
+  wecomProxyUrl: "https://zerowalk-contact.gg1178078309.workers.dev",
   home: {
-    logoSrc: "assets/logo-nobg.png",
-    logoFallback: "assets/logo-black.png",
-    qrSrc: "assets/qrcode.png",
+    logoSrc: "/assets/logo-nobg.png",
+    logoFallback: "/assets/logo-black.png",
+    qrSrc: "/assets/qrcode.png",
   },
 };

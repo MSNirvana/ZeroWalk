@@ -21,13 +21,17 @@
     return `zw-${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
   }
 
-  function appendLead({ name, phone, need = "" }) {
+  function appendLead({ name, contact, company, issue, note = "" }) {
     const records = readRecords();
     const record = {
       id: createId(),
       name,
-      phone,
-      need,
+      contact,
+      company,
+      issue,
+      note,
+      phone: contact,
+      need: issue,
       roleType: "client",
       status: "new",
       source: "home-contact",

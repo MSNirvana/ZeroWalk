@@ -3,21 +3,37 @@
   const config = window.ZeroWalk || {};
   const { brand, navLinks } = config;
 
-  function getCurrentPage() {
-    const path = window.location.pathname.split("/").pop();
-    return path || "index.html";
+  /** 规范路径，用于导航高亮（支持 /services、/services/、services.html） */
+  function normalizePath(pathname) {
+    let path = pathname || "/";
+    if (path.endsWith("/index.html")) {
+      path = path.slice(0, -"/index.html".length) || "/";
+    } else if (path.endsWith(".html")) {
+      path = path.slice(0, -".html".length);
+    }
+    if (path.length > 1 && path.endsWith("/")) {
+      path = path.slice(0, -1);
+    }
+    return path || "/";
+  }
+
+  function getCurrentPath() {
+    return normalizePath(window.location.pathname);
   }
 
   function isHomePage() {
-    const page = getCurrentPage();
-    return !page || page === "index.html";
+    return getCurrentPath() === "/";
   }
 
-  function navLinksHtml(activePage) {
+  function hrefMatches(linkHref, currentPath) {
+    return normalizePath(linkHref) === currentPath;
+  }
+
+  function navLinksHtml(currentPath) {
     if (!navLinks?.length) return "";
     return navLinks
       .map(({ label, href }) => {
-        const active = activePage === href ? " is-active" : "";
+        const active = hrefMatches(href, currentPath) ? " is-active" : "";
         return `<a href="${href}"${active}>${label}</a>`;
       })
       .join("");
@@ -33,7 +49,7 @@
   function renderSubNav(mount) {
     if (!brand) return;
 
-    const page = getCurrentPage();
+    const currentPath = getCurrentPath();
     mount.className = "top-nav-bar";
     mount.innerHTML = `
       <div class="top-nav-bar__inner">
@@ -44,7 +60,7 @@
           </picture>
           <span class="top-nav__brand-text">${brand.label}</span>
         </a>
-        <nav class="top-nav__links" aria-label="页面导航">${navLinksHtml(page)}</nav>
+        <nav class="top-nav__links" aria-label="页面导航">${navLinksHtml(currentPath)}</nav>
       </div>
     `;
   }
