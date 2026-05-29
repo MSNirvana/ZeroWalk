@@ -11,21 +11,62 @@
     />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,400;1,9..144,500&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="styles/home.css" />
   </head>
-  <body>
+  <body class="page-home">
     <div class="bg-gradient" aria-hidden="true"></div>
     <canvas id="canvas" aria-hidden="true"></canvas>
 
-    <nav id="topNavTags" class="top-nav-tags" aria-label="站点导航"></nav>
+    <nav id="topNavTags" class="top-nav top-nav--home" aria-label="站点导航"></nav>
 
     <p id="hint" class="hint">点击任意处</p>
 
+    <button type="button" id="contactBtn" class="contact-btn">联系我们</button>
+
+    <div id="modalOverlay" class="modal-overlay" aria-hidden="true"></div>
+    <div
+      id="modalCard"
+      class="modal-card"
+      role="dialog"
+      aria-labelledby="modalTitle"
+      aria-modal="true"
+    >
+      <button type="button" class="modal-close" id="modalClose" aria-label="关闭">×</button>
+
+      <p class="modal-section-title" id="modalTitle">扫码联系</p>
+      <div class="modal-qr">
+        <img src="assets/qrcode.png" alt="企业微信二维码" width="160" height="160" />
+        <p>扫描添加企业微信</p>
+      </div>
+
+      <p class="modal-divider">或留下联系方式</p>
+
+      <form id="contactForm" novalidate>
+        <div class="form-field">
+          <label for="fieldName">姓名</label>
+          <input id="fieldName" name="name" type="text" placeholder="您的姓名" required />
+        </div>
+        <div class="form-field">
+          <label for="fieldPhone">电话</label>
+          <input id="fieldPhone" name="phone" type="tel" placeholder="手机号码" required />
+        </div>
+        <div class="form-field">
+          <label for="fieldNeed">需求</label>
+          <input
+            id="fieldNeed"
+            name="need"
+            type="text"
+            placeholder="简单描述您的需求（选填）"
+          />
+        </div>
+        <button type="submit" class="form-submit" id="formSubmit">提交</button>
+      </form>
+    </div>
+
+    <script src="scripts/site-config.js"></script>
+    <script src="scripts/storage.js"></script>
     <script src="scripts/shared.js"></script>
+    <script src="scripts/home-ui.js"></script>
     <script src="scripts/home-canvas.js" defer></script>
   </body>
 </html>

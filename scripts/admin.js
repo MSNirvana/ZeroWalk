@@ -1,12 +1,4 @@
-const STORAGE_KEY = "zerowalk_intake_records";
-
-function readRecords() {
-  try {
-    return JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]");
-  } catch {
-    return [];
-  }
-}
+const { readRecords } = window.ZeroWalkStorage;
 
 function formatDate(value) {
   return new Date(value).toLocaleString("zh-CN", {
@@ -27,7 +19,7 @@ function roleLabel(roleType) {
 function renderRecordList(records) {
   const mount = document.querySelector("#record-list");
   if (!records.length) {
-    mount.innerHTML = "<li>还没有提交记录，先去注册页走一遍流程。</li>";
+    mount.innerHTML = "<li>还没有提交记录。可在首页汇聚后通过「联系我们」提交线索。</li>";
     return;
   }
 
@@ -51,13 +43,11 @@ function renderSummary(records) {
     total: records.length,
     client: records.filter((item) => item.roleType === "client").length,
     partner: records.filter((item) => item.roleType === "partner").length,
-    referral: records.filter((item) => item.roleType === "referral").length,
   };
 
   document.querySelector("#stat-total").textContent = String(stats.total);
   document.querySelector("#stat-client").textContent = String(stats.client);
   document.querySelector("#stat-partner").textContent = String(stats.partner);
-  document.querySelector("#stat-referral").textContent = String(stats.referral);
 }
 
 function renderDetail(record) {

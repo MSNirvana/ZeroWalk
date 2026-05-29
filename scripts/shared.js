@@ -1,55 +1,69 @@
-const NAV_ITEMS = [
-  ["首页", "index.html"],
-  ["关于我们", "about.html"],
-  ["服务内容", "services.html"],
-  ["合作方式", "collaborate.html"],
-];
+(function () {
+  const { brand, navLinks } = window.ZeroWalk;
 
-const HOME_NAV_ITEMS = NAV_ITEMS.filter(([, href]) => href !== "index.html");
+  function getCurrentPage() {
+    const path = window.location.pathname.split("/").pop();
+    return path || "index.html";
+  }
 
-function getCurrentPage() {
-  const path = window.location.pathname.split("/").pop();
-  return path || "index.html";
-}
+  function isHomePage() {
+    const page = getCurrentPage();
+    return !page || page === "index.html";
+  }
 
-function renderTopNavLinks(items, activeHref) {
-  return items
-    .map(([label, href]) => {
-      const active = activeHref === href ? " is-active" : "";
-      return `<a class="top-nav__link${active}" href="${href}">${label}</a>`;
-    })
-    .join("");
-}
+  function navLinksHtml(activePage) {
+    return navLinks
+      .map(({ label, href }) => {
+        const active = activePage === href ? " is-active" : "";
+        return `<a href="${href}"${active}>${label}</a>`;
+      })
+      .join("");
+  }
 
-function renderSiteNav() {
-  const mount = document.querySelector("[data-shared-header]");
-  if (!mount) return;
-  const page = getCurrentPage();
-  mount.innerHTML = `<nav class="top-nav" aria-label="站点导航">${renderTopNavLinks(NAV_ITEMS, page)}</nav>`;
-}
+  function renderHomeNav(mount) {
+    mount.className = "top-nav top-nav--home";
+    mount.innerHTML = navLinks
+      .map(({ label, href }) => `<a href="${href}">${label}</a>`)
+      .join("");
+  }
 
-function renderHomeNavTags() {
-  const mount = document.getElementById("topNavTags");
-  if (!mount) return;
-  const page = getCurrentPage();
-  mount.innerHTML = renderTopNavLinks(HOME_NAV_ITEMS, page);
-}
-
-function renderFooter() {
-  const year = new Date().getFullYear();
-  return `
-    <footer class="footer">
-      <div class="footer-inner">
-        <div>© ${year} 第零漫步 ZeroWalk. 从第零步开始，走进去做。</div>
+  function renderSubNav(mount) {
+    const page = getCurrentPage();
+    mount.className = "top-nav-bar";
+    mount.innerHTML = `
+      <div class="top-nav-bar__inner">
+        <a href="${brand.href}" class="top-nav__brand">
+          <img src="${brand.logo}" alt="ZeroWalk" class="top-nav__logo" width="36" height="36" />
+          <span class="top-nav__brand-text">${brand.label}</span>
+        </a>
+        <nav class="top-nav__links" aria-label="页面导航">${navLinksHtml(page)}</nav>
       </div>
-    </footer>
-  `;
-}
+    `;
+  }
 
-document.addEventListener("DOMContentLoaded", () => {
-  const footerMount = document.querySelector("[data-shared-footer]");
+  function renderSiteNav() {
+    const mount = document.getElementById("topNavTags");
+    if (!mount) return;
+    if (isHomePage()) renderHomeNav(mount);
+    else renderSubNav(mount);
+  }
 
-  renderSiteNav();
-  renderHomeNavTags();
-  if (footerMount) footerMount.innerHTML = renderFooter();
-});
+  function renderFooter() {
+    const year = new Date().getFullYear();
+    return `
+      <footer class="footer">
+        <div class="footer-inner">
+          <div>© ${year} 第零漫步 ZeroWalk. 从第零步开始，走进去做。</div>
+        </div>
+      </footer>
+    `;
+  }
+
+  function init() {
+    renderSiteNav();
+    const footerMount = document.querySelector("[data-shared-footer]");
+    if (footerMount) footerMount.innerHTML = renderFooter();
+  }
+
+  document.addEventListener("DOMContentLoaded", init);
+})();

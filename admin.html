@@ -7,10 +7,11 @@
     <link rel="icon" href="assets/favicon.png" type="image/png" />
     <link rel="stylesheet" href="styles/site.css" />
   </head>
-  <body>
+  <body class="page-sub">
     <div class="bg-gradient" aria-hidden="true"></div>
-    <div class="site-shell">
-      <div data-shared-header></div>
+    <header id="topNavTags" class="top-nav-bar" aria-label="站点导航"></header>
+
+    <div class="site-shell site-shell--sub">
       <main class="site-main">
         <section class="page-head">
           <div class="section-label">Admin Preview</div>
@@ -43,6 +44,8 @@
       </main>
       <div data-shared-footer></div>
     </div>
+    <script src="scripts/site-config.js"></script>
+    <script src="scripts/storage.js"></script>
     <script src="scripts/shared.js"></script>
     <script src="scripts/admin.js"></script>
   </body>

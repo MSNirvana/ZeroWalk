@@ -5,13 +5,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>关于我们 · 第零漫步 ZeroWalk</title>
     <link rel="icon" href="assets/favicon.png" type="image/png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="styles/site.css" />
   </head>
-  <body>
+  <body class="page-sub">
     <div class="bg-gradient" aria-hidden="true"></div>
-    <div class="site-shell">
-      <div data-shared-header></div>
-      <main class="site-main">
+    <header id="topNavTags" class="top-nav-bar" aria-label="站点导航"></header>
+
+    <div class="site-shell site-shell--sub">
+      <main>
         <section class="page-head">
           <span class="section-label">About</span>
           <h1>为什么叫第零漫步</h1>
@@ -34,12 +37,10 @@
           <blockquote>我们不站在外面给建议。我们走进去，亲手把事情做成。</blockquote>
         </section>
 
-        <section class="page-wrap page-wrap--tight">
-          <div class="page-head page-head--inline">
-            <span class="section-label">Cases</span>
-            <h1>真实项目，真实结果</h1>
-            <p>我们不放大效果，也不假装所有项目都一样顺利。更重要的是，问题是怎么判断、怎么切口、怎么一步步跑起来的。</p>
-          </div>
+        <section class="page-head page-head--spaced">
+          <span class="section-label">Cases</span>
+          <h1>真实项目，真实结果</h1>
+          <p>我们不放大效果，也不假装所有项目都一样顺利。更重要的是，问题是怎么判断、怎么切口、怎么一步步跑起来的。</p>
         </section>
 
         <section class="page-wrap detail-grid">
@@ -100,6 +101,7 @@
       </main>
       <div data-shared-footer></div>
     </div>
+    <script src="scripts/site-config.js"></script>
     <script src="scripts/shared.js"></script>
   </body>
 </html>

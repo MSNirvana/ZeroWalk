@@ -12,6 +12,7 @@ const BRAND_LETTERS = ["Z", "e", "r", "o", "W", "a", "l", "k"];
 const SLOGAN_TEXT = "Walk in. Make AI work.";
 const SLOGAN_CHARS = [...SLOGAN_TEXT].filter((ch) => ch !== " ");
 const EDGE = 80;
+const NAV_SAFE_TOP = 80;
 const TRAIL_MAX = 4;
 const TRAIL_INTERVAL = 3;
 const PARTICLE_COUNT = 32;
@@ -19,7 +20,10 @@ const ASSEMBLE_MS = 650;
 const IDLE_MS = 5000;
 const DISPERSE_MS = 1200;
 const MAX_DPR = 2;
-const LOGO_SRC = "assets/logo-nobg.png";
+const LOGO_SRC = window.ZeroWalk.home.logoSrc;
+const LOGO_FALLBACK = window.ZeroWalk.home.logoFallback;
+const QR_SRC = window.ZeroWalk.home.qrSrc;
+const ui = window.ZeroWalkHomeUI;
 const FONT_FAMILY = "'Fraunces', Georgia, 'Times New Roman', serif";
 const BRAND_COLOR = "#111111";
 const SLOGAN_COLOR = "#b5b3ad";
@@ -142,7 +146,7 @@ function clearIdleTimer() {
 
 function scheduleIdleTimer() {
   clearIdleTimer();
-  if (state !== "hold") return;
+  if (state !== "hold" || ui.isModalOpen()) return;
   idleTimer = setTimeout(startDisperse, IDLE_MS);
 }
 
@@ -168,12 +172,13 @@ function resizeCanvas() {
 }
 
 function randomPosition(halfSize) {
-  const min = EDGE + halfSize;
+  const minX = EDGE + halfSize;
+  const minY = NAV_SAFE_TOP + halfSize;
   const maxX = width - EDGE - halfSize;
   const maxY = height - EDGE - halfSize;
   return {
-    x: rand(min, Math.max(min, maxX)),
-    y: rand(min, Math.max(min, maxY)),
+    x: rand(minX, Math.max(minX, maxX)),
+    y: rand(minY, Math.max(minY, maxY)),
   };
 }
 
@@ -279,7 +284,7 @@ function createParticles() {
     const color = LETTER_COLORS[Math.floor(Math.random() * LETTER_COLORS.length)];
     particles.push({
       x: rand(EDGE, width - EDGE),
-      y: rand(EDGE, height - EDGE),
+      y: rand(NAV_SAFE_TOP, height - EDGE),
       vx: randSign() * rand(0.05, 0.15),
       vy: randSign() * rand(0.05, 0.15),
       radius: rand(1, 2),
@@ -399,8 +404,8 @@ function handleBoundary(obj) {
     obj.vx = -Math.abs(obj.vx) - rand(0, 0.05);
     obj.vy += rand(-0.04, 0.04);
   }
-  if (obj.y < EDGE + half) {
-    obj.y = EDGE + half;
+  if (obj.y < NAV_SAFE_TOP + half) {
+    obj.y = NAV_SAFE_TOP + half;
     obj.vy = Math.abs(obj.vy) + rand(0, 0.05);
     obj.vx += rand(-0.04, 0.04);
   }
@@ -492,6 +497,10 @@ function enterHold() {
     const hc = holdColorFor(obj);
     if (hc) obj.color = hc;
   });
+  setTimeout(() => {
+    ui.showNav();
+    ui.showContact();
+  }, 300);
   scheduleIdleTimer();
 }
 
@@ -521,6 +530,9 @@ function assignScatterTargets() {
 function startDisperse() {
   if (state !== "hold") return;
   clearIdleTimer();
+  ui.hideNav();
+  ui.hideContact();
+  ui.closeModal();
   state = "disperse";
   disperseStart = performance.now();
   assignScatterTargets();
@@ -598,8 +610,8 @@ function updateParticles() {
       p.x = width - EDGE;
       p.vx = -Math.abs(p.vx);
     }
-    if (p.y < EDGE) {
-      p.y = EDGE;
+    if (p.y < NAV_SAFE_TOP) {
+      p.y = NAV_SAFE_TOP;
       p.vy = Math.abs(p.vy);
     }
     if (p.y > height - EDGE) {
@@ -729,6 +741,8 @@ function startAssemble() {
   state = "assemble";
   assembleStart = performance.now();
   hint.classList.add("is-hidden");
+  ui.hideNav();
+  ui.hideContact();
   clearIdleTimer();
   sloganCacheKey = "";
   brandCacheKey = "";
@@ -756,9 +770,8 @@ function onUserClick() {
 document.addEventListener(
   "click",
   (e) => {
-    if (e.target.closest(".top-nav-tags a") || e.target.closest(".top-nav a")) {
-      return;
-    }
+    if (ui.handleDocumentClick(e)) return;
+    if (e.target.closest(".top-nav-bar a")) return;
     onUserClick();
   },
   true
@@ -767,12 +780,19 @@ document.addEventListener(
 window.addEventListener("resize", resizeCanvas);
 
 window.addEventListener("load", async () => {
+  ui.bindIdle({
+    getState: () => state,
+    schedule: scheduleIdleTimer,
+    clear: clearIdleTimer,
+  });
+
   try {
     logoImg = await loadImage(LOGO_SRC);
+    loadImage(QR_SRC).catch(() => {});
   } catch (err) {
     console.warn("图片预加载失败，尝试备用路径", err);
     try {
-      logoImg = await loadImage("assets/logo-black.png");
+      logoImg = await loadImage(LOGO_FALLBACK);
     } catch (e2) {
       logoImg = new Image();
     }
